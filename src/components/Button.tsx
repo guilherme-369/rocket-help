@@ -14,7 +14,9 @@ export const Button = ({ title, ...rest }: Props) => {
       _pressed={{ bg: "green.500" }}
       {...rest}
     >
-      <Heading color="white">{title}</Heading>
+      <Heading color="white" fontSize="sm">
+        {title}
+      </Heading>
     </NativeBaseButton>
   );
 };
