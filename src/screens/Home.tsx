@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   VStack,
   HStack,
@@ -20,15 +21,24 @@ import { Order, OrderProps } from "../components/Order";
 export const Home = () => {
   const [statusSelect, setStatusSelect] = useState<"open" | "closed">("open");
   const [orders, setOrders] = useState<OrderProps[]>([
-    // {
-    //   id: "1",
-    //   patrimony: "123456",
-    //   when: "18/07/2022 às 14h",
-    //   status: "open",
-    // },
+    {
+      id: "10",
+      patrimony: "123456",
+      when: "18/10/2002",
+      status: "closed",
+    },
   ]);
 
+  const navigation = useNavigation();
   const { colors } = useTheme();
+
+  const HandleNewOrder = () => {
+    navigation.navigate("new");
+  };
+
+  const handleOpenDetails = (orderId: string) => {
+    navigation.navigate("details", { orderId });
+  };
 
   return (
     <VStack flex={1} pb={5} bg="gray.700">
@@ -53,8 +63,8 @@ export const Home = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Heading color="gray.100">Meus Chamados</Heading>
-          <Text color="gray.200">6</Text>
+          <Heading color="gray.100">Solicitações</Heading>
+          <Text color="gray.200">{orders.length}</Text>
         </HStack>
         <HStack space={3} mb={8}>
           <Filter
@@ -74,7 +84,9 @@ export const Home = () => {
         <FlatList
           data={orders}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Order data={item} />}
+          renderItem={({ item }) => (
+            <Order data={item} onPress={() => handleOpenDetails(item.id)} />
+          )}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={() => (
             <Center>
@@ -86,7 +98,7 @@ export const Home = () => {
             </Center>
           )}
         />
-        <Button title="Nova Solicitação" />
+        <Button title="Nova Solicitação" onPress={HandleNewOrder} />
       </VStack>
     </VStack>
   );
